@@ -1,0 +1,14 @@
+var regLink=false;var tid=getPARAM('tid');$(function(){$('').click(function(e){e.preventDefault();doRegistration();});getAdvData();setInterval(function(){var imgContainer=$('.main-offer-img'),oldImg=imgContainer.css('background-image'),newImg=imgContainer.data('img');imgContainer.data('img',oldImg);imgContainer.css('background-image',newImg);},4000);});function injectPixel(callback){var pixelUrl='https://record.eshkol.com/_q5h4xISYMFhDp78Ph1_jCGNd7ZgqdRLk/1/?payload=PTM_FallBack_{traffic_source}_{zone}_{tid}';pixelUrl=pixelUrl.replace('{tid}',getPARAM('tid')).replace('{zone}',getPARAM('zone')).replace('{traffic_source}',getPARAM('traffic_source'));if(document.getElementById('pixel_iframe')){if(callback)return callback();}
+console.log('insert click pixel... URL:',pixelUrl,typeof(callback));$('body').append('<iframe id="pixel_iframe" src="'+ pixelUrl+'" width="1px" height="1px" style="position: absolute;bottom: 0;left:0;"></iframe>');if(callback){document.getElementById('pixel_iframe').onload=callback;}}
+function getPARAM(name){name=name.replace(/[\[]/,"\\[").replace(/[\]]/,"\\]");var regex=new RegExp("[\\?&]"+ name+"=([^&#]*)"),results=regex.exec(location.search);return results===null?"":decodeURIComponent(results[1].replace(/\+/g," "));}
+function doRegistration(e){if(e){e.preventDefault();}
+if(tid){injectPixel(function(){location.href=mainSite+'&neodl=Deposit&AR='+ readAdvCookie('ar')+'&PAR='+ readAdvCookie('par')+'#register';});}else{location.href=mainSite+'&neodl=Deposit&AR='+ readAdvCookie('ar')+'&PAR='+ readAdvCookie('par')+'#register';}}
+function rewriteAdvCookie(name,value,days){var expires;if(days){var date=new Date();date.setTime(date.getTime()+(days*24*60*60*1000));expires=";expires="+ date.toGMTString();}else{expires="";}
+document.cookie=name+'='+ value+ expires+';domain=.magicred.com;path=/';}
+function readAdvCookie(name){var nameEQ=name+'=';var ca=document.cookie.split(';');for(var i=0;i<ca.length;i++){var c=ca[i];while(c.charAt(0)===' ')c=c.substring(1,c.length);if(c.indexOf(nameEQ)===0)return c.substring(nameEQ.length,c.length);}
+return null;}
+function getAdvData(){var queryDict={},defAr='',defPar='-cW_fFRpXONVDQsR8vgoqWNd7ZgqdRLk';location.hash.substr(1).split("&").forEach(function(item){queryDict[item.split("=")[0]]=item.split('=')[1];});if(typeof queryDict['ar']!=='undefined'){defAr=queryDict['ar'];}
+if(typeof queryDict['par']!=='undefined'){defPar=queryDict['par'];}
+if(defAr==='177'){regLink='http://traffic.focuusing.com/process?'+ location.hash.substr(1)+'&direct=1';if(regLink.indexOf('&code=')!==-1){regLink=regLink.replace('&code=','&r_code=');}}
+if(readAdvCookie('ar')===null){rewriteAdvCookie('ar',encodeURIComponent(defAr),60);}
+if(readAdvCookie('par')===null){rewriteAdvCookie('par',encodeURIComponent(defPar),60);}}
